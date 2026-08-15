@@ -1,0 +1,2333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Medicines | Ganesh Pharmacy</title>
+<link rel="stylesheet" href="../css/style.css">
+
+<style>
+:root{
+  --teal:#7C3AED;
+  --teal-dark:#5B21B6;
+  --cyan:#9333EA;
+  --ink:#1E1B4B;
+  --muted:#6B617B;
+  --bg:#FAF8FC;
+  --white:#fff;
+  --line:#E9D5FF;
+  --green:#10B981;
+  --green-bg:#DCFCE7;
+  --red:#EF4444;
+  --red-bg:#FEE2E2;
+  --blue-bg:#F5F3FF;
+  --shadow:0 10px 25px -5px rgba(30,27,75,.08);
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background:radial-gradient(at 0% 0%, rgba(233, 213, 255, 0.4) 0px, transparent 50%), radial-gradient(at 100% 100%, rgba(243, 232, 255, 0.4) 0px, transparent 50%), #FAF8FC;
+  color:var(--ink);
+  line-height:1.6;
+}
+
+button,input,textarea{font:inherit}
+button{cursor:pointer}
+
+.container{
+  width:min(1280px,92%);
+  margin:auto;
+}
+
+/* HERO */
+.hero{
+  background:linear-gradient(135deg,#f5f3ff 0%,#f3e8ff 50%,#faf8fc 100%);
+  border-bottom:1px solid #e9d5ff;
+  padding:35px 0 30px;
+}
+
+.hero h1{
+  margin:0 0 6px;
+  font-size:32px;
+  font-weight:800;
+  color:#0f172a;
+  letter-spacing:-0.5px;
+}
+
+.hero p{
+  margin:0 0 18px;
+  color:#475569;
+  font-size:15px;
+}
+
+/* SEARCH */
+.search-area{
+  position:relative;
+  max-width:720px;
+}
+
+.search-box{
+  height:52px;
+  background:white;
+  border:1px solid #cbd5e1;
+  border-radius:14px;
+  display:flex;
+  overflow:hidden;
+  box-shadow:0 10px 30px rgba(124,58,237,.12);
+  transition:all 0.25s ease;
+}
+
+.search-box:focus-within{
+  border-color:var(--teal);
+  box-shadow:0 10px 35px rgba(124,58,237,.22);
+}
+
+.search-icon{
+  width:50px;
+  display:grid;
+  place-items:center;
+  color:var(--teal);
+  font-size:21px;
+}
+
+.search-box input{
+  flex:1;
+  border:0;
+  outline:0;
+  font-size:15px;
+  font-weight:500;
+  color:#0f172a;
+}
+
+.search-box button{
+  border:0;
+  background:linear-gradient(135deg,var(--teal),var(--cyan));
+  color:white;
+  padding:0 28px;
+  font-weight:700;
+  font-size:14px;
+  cursor:pointer;
+  transition:all 0.2s ease;
+}
+
+.search-box button:hover{
+  opacity:0.92;
+}
+
+.suggestions{
+  display:none;
+  position:absolute;
+  top:58px;
+  left:0;
+  right:0;
+  background:white;
+  border:1px solid var(--line);
+  border-radius:14px;
+  box-shadow:0 20px 40px rgba(15,23,42,.15);
+  z-index:100;
+  overflow:hidden;
+}
+
+.suggestion{
+  padding:12px 16px;
+  display:flex;
+  justify-content:space-between;
+  border-bottom:1px solid #f1f5f9;
+  cursor:pointer;
+  transition:background 0.15s ease;
+}
+
+.suggestion:hover{
+  background:#f5f3ff;
+}
+
+.suggestion strong{
+  font-size:13px;
+  color:#0f172a;
+}
+
+.suggestion small{
+  display:block;
+  color:var(--muted);
+  margin-top:3px;
+}
+
+/* FILTERS */
+.filters{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:16px;
+}
+
+.filter{
+  border:1px solid #cbd5e1;
+  background:white;
+  color:#475569;
+  border-radius:9999px;
+  padding:8px 16px;
+  font-size:12.5px;
+  font-weight:700;
+  cursor:pointer;
+  transition:all 0.2s ease;
+}
+
+.filter:hover{
+  border-color:var(--teal);
+  color:var(--teal);
+  background:#f5f3ff;
+}
+
+.filter.active{
+  background:linear-gradient(135deg,var(--teal),var(--cyan));
+  color:white;
+  border-color:transparent;
+  box-shadow:0 4px 14px rgba(124,58,237,0.3);
+}
+
+/* MAIN */
+.main{
+  width:min(1280px,92%);
+  margin:auto;
+  padding:30px 0 50px;
+}
+
+.layout{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 320px;
+  gap:24px;
+  align-items:start;
+}
+
+.heading{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:18px;
+}
+
+.heading h2{
+  margin:0;
+  font-size:22px;
+  font-weight:800;
+  color:#0f172a;
+}
+
+.heading span{
+  color:var(--muted);
+  font-size:13px;
+  font-weight:600;
+}
+
+/* MEDICINE GRID */
+.medicine-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:18px;
+}
+
+.card{
+  background:white;
+  border:1px solid #e2e8f0;
+  border-radius:16px;
+  padding:15px;
+  box-shadow:0 10px 25px -5px rgba(15,23,42,.06);
+  transition:all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+
+.card:hover{
+  transform:translateY(-6px);
+  border-color:#e9d5ff;
+  box-shadow:0 20px 35px -8px rgba(124,58,237,.18);
+}
+
+.medicine-image{
+  height:140px;
+  background:#f8fafc;
+  border-radius:11px;
+  display:grid;
+  place-items:center;
+  position:relative;
+  margin-bottom:12px;
+  overflow:hidden;
+  border:1px solid #e2e8f0;
+}
+
+.medicine-img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center;
+  border-radius:11px;
+  transition:transform 0.3s ease;
+}
+
+.card:hover .medicine-img{
+  transform:scale(1.06);
+}
+
+.badge{
+  display:inline-block;
+  padding:4px 8px;
+  border-radius:8px;
+  font-size:10px;
+  font-weight:bold;
+  margin-bottom:7px;
+}
+
+.otc{
+  background:var(--green-bg);
+  color:#087443;
+}
+
+.rx{
+  background:var(--red-bg);
+  color:var(--red);
+}
+
+.card h3{
+  font-size:14px;
+  margin:0 0 4px;
+}
+
+.brand{
+  color:var(--teal);
+  font-size:11px;
+  font-weight:bold;
+}
+
+.dose{
+  color:var(--muted);
+  font-size:11px;
+  margin-top:5px;
+}
+
+.description{
+  color:#61748a;
+  font-size:10.5px;
+  margin-top:4px;
+  min-height:27px;
+}
+
+.price-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin:10px 0;
+}
+
+.price{
+  font-size:14px;
+  font-weight:900;
+}
+
+.stock{
+  color:var(--green);
+  font-size:10px;
+  font-weight:bold;
+}
+
+.add-cart{
+  width:100%;
+  border:0;
+  border-radius:10px;
+  background:linear-gradient(135deg, var(--teal), var(--teal-dark));
+  color:white;
+  padding:10px;
+  font-size:12px;
+  font-weight:700;
+  cursor:pointer;
+  box-shadow:0 4px 12px rgba(124,58,237,.25);
+  transition:all 0.2s ease;
+}
+
+.add-cart:hover{
+  background:linear-gradient(135deg, #8b5cf6, var(--teal));
+  transform:translateY(-2px);
+  box-shadow:0 6px 16px rgba(124,58,237,.35);
+}
+
+/* SIDE PANELS */
+.sidebar{
+  position:sticky;
+  top:92px;
+}
+
+.panel{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:16px;
+  box-shadow:var(--shadow);
+  margin-bottom:17px;
+}
+
+.panel-title{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:10px;
+}
+
+.panel-title h2{
+  margin:0;
+  font-size:17px;
+}
+
+.count{
+  background:var(--blue-bg);
+  color:#5b21b6;
+  border-radius:7px;
+  padding:5px 8px;
+  font-size:10px;
+  font-weight:bold;
+}
+
+/* CART */
+.cart-item{
+  display:grid;
+  grid-template-columns:42px 1fr auto;
+  gap:9px;
+  align-items:center;
+  padding:11px 0;
+  border-top:1px solid #edf2f3;
+}
+
+.cart-icon{
+  width:42px;
+  height:42px;
+  background:#f1f8f8;
+  border-radius:7px;
+  display:grid;
+  place-items:center;
+}
+
+.cart-name{
+  font-size:11px;
+  font-weight:bold;
+}
+
+.cart-price{
+  font-size:10px;
+  color:var(--muted);
+  margin-top:3px;
+}
+
+.quantity{
+  display:flex;
+  align-items:center;
+  gap:5px;
+  margin-top:5px;
+}
+
+.quantity button{
+  width:21px;
+  height:21px;
+  border:1px solid #d4e0e2;
+  background:white;
+  border-radius:5px;
+}
+
+.remove{
+  border:0;
+  background:none;
+  color:#9aa9b5;
+}
+
+.empty-cart{
+  color:var(--muted);
+  font-size:12px;
+  padding:15px 0;
+}
+
+.summary{
+  border-top:1px solid #edf2f3;
+  margin-top:8px;
+  padding-top:10px;
+}
+
+.summary-row{
+  display:flex;
+  justify-content:space-between;
+  margin:6px 0;
+  font-size:12px;
+}
+
+.total{
+  background:#f3e8ff;
+  border-radius:8px;
+  padding:10px;
+  font-weight:900;
+}
+
+.order-button{
+  width:100%;
+  border:0;
+  background:var(--teal);
+  color:white;
+  padding:11px;
+  border-radius:8px;
+  margin-top:10px;
+  font-weight:bold;
+}
+
+.order-button:disabled{
+  background:#b7c9ca;
+  cursor:not-allowed;
+}
+
+/* STATUS FLOW */
+.order-badge-tag {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.badge-confirmed { background: #f3e8ff; color: #6d28d9; }
+.badge-verification { background: #fef3c7; color: #b45309; }
+.badge-packaging { background: #f3e8ff; color: #6b21a8; }
+.badge-delivery { background: #ede9fe; color: #5b21b6; }
+.badge-completed { background: #dcfce7; color: #15803d; }
+
+.status-step{
+  display:grid;
+  grid-template-columns:24px 1fr;
+  gap:10px;
+  position:relative;
+  padding:7px 6px;
+  border-radius:8px;
+  transition: all 0.25s ease;
+}
+
+.status-step:not(:last-child):after{
+  content:"";
+  position:absolute;
+  width:2px;
+  height:30px;
+  background:#cbd5e1;
+  left:17px;
+  top:32px;
+  z-index:1;
+}
+
+.status-step.done:not(:last-child):after{
+  background:#7c3aed;
+}
+
+.dot{
+  width:24px;
+  height:24px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:#f1f5f9;
+  color:#64748b;
+  font-size:10px;
+  font-weight:bold;
+  z-index:2;
+  border:1px solid #cbd5e1;
+}
+
+.status-step.done .dot{
+  background:#7c3aed;
+  color:white;
+  border-color:#7c3aed;
+}
+
+.status-step.current .dot{
+  background:#9333ea;
+  color:white;
+  border-color:#9333ea;
+  box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.2);
+  animation: statusPulse 2s infinite;
+}
+
+@keyframes statusPulse {
+  0% { box-shadow: 0 0 0 0px rgba(147, 51, 234, 0.4); }
+  70% { box-shadow: 0 0 0 6px rgba(147, 51, 234, 0); }
+  100% { box-shadow: 0 0 0 0px rgba(147, 51, 234, 0); }
+}
+
+.status-step.current{
+  background:#f5f3ff;
+  border:1px solid #e9d5ff;
+}
+
+.status-step.done{
+  opacity:0.95;
+}
+
+.status-step.pending{
+  opacity:0.6;
+}
+
+.step-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.step-title {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.step-time {
+  font-size: 9px;
+  font-weight: 600;
+  color: #6d28d9;
+  background: #f3e8ff;
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+
+.step-desc {
+  display: block;
+  color: #64748b;
+  font-size: 9.5px;
+  margin-top: 2px;
+}
+
+.status-info{
+  background:var(--blue-bg);
+  border:1px solid #c9e5fa;
+  border-radius:8px;
+  padding:10px;
+  font-size:10.5px;
+  line-height:1.6;
+  margin-top:10px;
+}
+
+.courier-info-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 9px;
+  margin-top: 8px;
+  font-size: 10px;
+}
+
+.courier-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 4px;
+  color: #334155;
+}
+
+.order-items-mini {
+  font-size: 10px;
+  color: #475569;
+  background: #f5f3ff;
+  padding: 6px 8px;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  border-left: 3px solid #7c3aed;
+}
+
+/* RX */
+.rx-box{
+  background:#f5f3ff;
+  border:1px solid #e9d5ff;
+  border-radius:14px;
+  padding:13px;
+}
+
+.rx-box strong{
+  font-size:12px;
+}
+
+.rx-box p{
+  color:#4f6478;
+  font-size:10.5px;
+  line-height:1.5;
+}
+
+/* MODAL */
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(15,23,42,.55);
+  z-index:200;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
+.modal.open{
+  display:flex;
+}
+
+.modal-box{
+  width:min(520px,100%);
+  background:white;
+  border-radius:17px;
+  padding:22px;
+  box-shadow:0 25px 60px rgba(0,0,0,.22);
+}
+
+.modal-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.modal-head h2{
+  margin:0;
+  font-size:19px;
+}
+
+.close{
+  border:0;
+  background:#f1f5f6;
+  border-radius:8px;
+  padding:7px 10px;
+}
+
+.checkout-summary{
+  background:#f6f9fa;
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:12px;
+  margin:15px 0;
+  font-size:12px;
+}
+
+.form-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.form-grid input,
+.form-grid textarea{
+  width:100%;
+  border:1px solid #d7e1e3;
+  border-radius:8px;
+  padding:11px;
+  outline:none;
+}
+
+.form-grid textarea{
+  grid-column:1/-1;
+  min-height:80px;
+  resize:vertical;
+}
+
+.confirm{
+  grid-column:1/-1;
+  border:0;
+  background:var(--teal);
+  color:white;
+  padding:12px;
+  border-radius:8px;
+  font-weight:bold;
+}
+
+.success{
+  text-align:center;
+}
+
+.success-icon{
+  font-size:45px;
+}
+
+/* RESPONSIVE */
+@media(max-width:1100px){
+  .medicine-grid{
+    grid-template-columns:repeat(3,1fr);
+  }
+}
+
+@media(max-width:900px){
+  nav{
+    display:none;
+  }
+
+  .layout{
+    grid-template-columns:1fr;
+  }
+
+  .sidebar{
+    position:static;
+  }
+}
+
+@media(max-width:700px){
+  .topbar-content{
+    display:none;
+  }
+
+  .header{
+    height:62px;
+  }
+
+  .logo h2{
+    font-size:15px;
+  }
+
+  .cart-top{
+    padding:9px 11px;
+    font-size:11px;
+  }
+
+  .hero{
+    padding:23px 0;
+  }
+
+  .hero h1{
+    font-size:25px;
+  }
+
+  .medicine-grid{
+    grid-template-columns:repeat(2,1fr);
+    gap:11px;
+  }
+
+  .card{
+    padding:10px;
+  }
+
+  .medicine-image{
+    height:105px;
+  }
+
+  .description{
+    display:none;
+  }
+
+  .footer-grid{
+    grid-template-columns:1fr 1fr;
+  }
+}
+
+@media(max-width:480px){
+  .medicine-grid{
+    grid-template-columns:1fr;
+  }
+
+  .form-grid{
+    grid-template-columns:1fr;
+  }
+
+  .form-grid textarea,
+  .confirm{
+    grid-column:auto;
+  }
+
+  .footer-grid{
+    grid-template-columns:1fr;
+  }
+
+  .footer-bottom{
+    display:block;
+    line-height:1.8;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+  <div class="container top-bar-content">
+    <div class="top-bar-info">
+      <div class="top-bar-item">
+        <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        <span>Main Road, Medical Zone, City Center</span>
+      </div>
+      <div class="top-bar-item">
+        <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+        <span>Open Daily: 7:00 AM - 11:00 PM</span>
+      </div>
+    </div>
+    <div class="top-bar-badge">
+      CSE 3rd Year Project | Developed by B.Ganesh
+    </div>
+  </div>
+</div>
+
+<!-- MAIN HEADER -->
+<header class="main-header">
+  <div class="container header-container">
+    <a href="index.html" class="brand-logo">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24"><path d="M19 10.5h-5.5V5c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v5.5H5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5h5.5V19c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5v-5.5H19c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5z"/></svg>
+      </div>
+      <div class="brand-text">
+        <h1>GANESH <span>PHARMACY</span></h1>
+        <p>Medical Store</p>
+      </div>
+    </a>
+
+    <nav class="nav-menu">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="medicines.html" class="nav-link active">Medicines</a>
+      <a href="services.html" class="nav-link">Services</a>
+      <a href="wellness.html" class="nav-link">Health & Wellness</a>
+      <a href="contact.html" class="nav-link">Contact</a>
+    </nav>
+
+    <div class="header-actions">
+      <button class="cart-top" onclick="document.getElementById('cartPanel').scrollIntoView({behavior:'smooth'})" style="display:flex; align-items:center; gap:6px; background:linear-gradient(135deg, var(--primary-teal), var(--accent-cyan)); color:white; border:none; padding:9px 18px; border-radius:9999px; font-weight:700; cursor:pointer; box-shadow:0 4px 14px rgba(124,58,237,0.35);">
+        🛒 Cart (<span id="topCartCount">0</span>)
+      </button>
+      <a href="tel:+919876543210" class="emergency-btn">
+        <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+        <span>Emergency 24/7</span>
+      </a>
+      <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle Mobile Menu">☰</button>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile Navigation Drawer -->
+<div class="drawer-overlay" id="drawerOverlay"></div>
+<div class="mobile-drawer" id="mobileDrawer">
+  <div class="drawer-header">
+    <div class="brand-text">
+      <h1 style="font-size: 1.1rem;">GANESH PHARMACY</h1>
+      <p>Medical Store</p>
+    </div>
+    <button class="drawer-close" id="drawerClose">✕</button>
+  </div>
+  <div class="drawer-links">
+    <a href="index.html" class="drawer-link">Home Dashboard</a>
+    <a href="medicines.html" class="drawer-link active">Medicines Search</a>
+    <a href="services.html" class="drawer-link">Our Services</a>
+    <a href="wellness.html" class="drawer-link">Health & Wellness</a>
+    <a href="contact.html" class="drawer-link">Contact Store</a>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+
+    <h1>Medicines & Healthcare</h1>
+    <p>Order genuine medicines from Ganesh Pharmacy</p>
+
+    <div class="search-area">
+
+      <div class="search-box">
+        <div class="search-icon">⌕</div>
+
+        <input
+          id="searchInput"
+          type="text"
+          autocomplete="off"
+          placeholder="Search medicines, brands or dosage..."
+        >
+
+        <button onclick="performSearch()">Search</button>
+      </div>
+
+      <div id="suggestions" class="suggestions"></div>
+
+    </div>
+
+    <div class="filters">
+
+      <button class="filter active" data-filter="all">All</button>
+      <button class="filter" data-filter="pain">💊 Pain & Fever</button>
+      <button class="filter" data-filter="digestive">Digestive</button>
+      <button class="filter" data-filter="vitamins">Vitamins</button>
+      <button class="filter" data-filter="cold">Cold & Cough</button>
+      <button class="filter" data-filter="otc">OTC</button>
+      <button class="filter" data-filter="rx">Rx Prescription</button>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- MAIN -->
+<main class="main">
+
+  <div class="layout">
+
+    <!-- MEDICINES -->
+    <section>
+
+      <div class="heading">
+        <h2>Medicines Catalogue</h2>
+        <span id="medicineCount">15 medicines found</span>
+      </div>
+
+      <div id="medicineGrid" class="medicine-grid"></div>
+
+      <div id="emptyMessage"
+           style="display:none;background:white;border:1px solid var(--line);padding:40px;text-align:center;border-radius:15px;color:var(--muted)">
+        <strong>No medicine found</strong><br>
+        Try another medicine, brand or category.
+      </div>
+
+    </section>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+      <!-- CART -->
+      <div class="panel" id="cartPanel">
+
+        <div class="panel-title">
+          <h2>🛒 Shopping Cart</h2>
+          <span class="count" id="cartCount">0 Items</span>
+        </div>
+
+        <div id="cartItems">
+          <div class="empty-cart">
+            Your cart is empty. Add medicines to place an order.
+          </div>
+        </div>
+
+        <div class="summary">
+
+          <div class="summary-row">
+            <span>Subtotal</span>
+            <strong id="subtotal">₹0</strong>
+          </div>
+
+          <div class="summary-row">
+            <span>Delivery</span>
+            <strong id="delivery">₹0</strong>
+          </div>
+
+          <div class="summary-row total">
+            <span>Total</span>
+            <strong id="total">₹0</strong>
+          </div>
+
+        </div>
+
+        <button
+          id="orderButton"
+          class="order-button"
+          disabled
+          onclick="openCheckout()">
+          🛒 Proceed to Order
+        </button>
+
+      </div>
+
+      <!-- ORDER STATUS -->
+      <div class="panel" id="orderStatusPanel">
+
+        <div class="panel-title" style="display:flex; flex-direction:column; gap:8px; align-items:stretch;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <h2 style="margin:0; font-size:1.05rem;">📦 Order Status</h2>
+            <span id="orderBadge" class="order-badge-tag badge-confirmed">No Order</span>
+          </div>
+
+          <!-- Order Switcher Dropdown -->
+          <div style="display:flex; align-items:center; gap:6px; margin-top:2px;">
+            <label for="orderSelect" style="font-size:10px; font-weight:700; color:var(--muted); text-transform:uppercase;">Select Order:</label>
+            <select id="orderSelect" onchange="switchSelectedOrder(this.value)" style="flex:1; padding:4px 8px; border:1px solid #cbd5e1; border-radius:6px; font-size:10.5px; font-weight:700; background:#f8fafc; color:#0f172a; cursor:pointer;">
+              <option value="">No Active Orders</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="statusContainer">
+          <div id="statusFlow"></div>
+          <div class="status-info" id="statusInfo"></div>
+          <div id="courierDetails"></div>
+        </div>
+
+        <div style="display:flex; gap:6px; margin-top:10px; border-top:1px solid #e2e8f0; padding-top:8px;">
+          <button onclick="advanceSelectedOrderStage()" style="flex:1; padding:6px 8px; background:#7c3aed; color:white; border:none; border-radius:6px; font-size:10.5px; font-weight:700; cursor:pointer;" title="Simulate next step for this order">
+            ⚡ Advance Stage
+          </button>
+          <button onclick="createTestOrder()" style="padding:6px 8px; background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; border-radius:6px; font-size:10.5px; font-weight:600; cursor:pointer;" title="Add a sample order to test multiple orders">
+            ➕ Demo Order
+          </button>
+        </div>
+
+      </div>
+
+      <!-- PRESCRIPTION -->
+      <div class="rx-box">
+
+        <strong>💙 Prescription Medicines</strong>
+
+        <p>
+          Some medicines require a valid doctor's prescription.
+          Please upload your prescription or contact our pharmacist
+          before ordering.
+        </p>
+
+      </div>
+
+    </aside>
+
+  </div>
+
+</main>
+
+<!-- CHECKOUT MODAL -->
+<div class="modal" id="checkoutModal">
+
+  <div class="modal-box">
+
+    <div class="modal-head">
+      <h2>Checkout - Order Details</h2>
+
+      <button class="close" onclick="closeCheckout()">✕</button>
+    </div>
+
+    <div id="checkoutSummary" class="checkout-summary"></div>
+
+    <div class="form-grid">
+
+      <input
+        id="customerName"
+        type="text"
+        placeholder="Full name"
+      >
+
+      <input
+        id="customerPhone"
+        type="tel"
+        placeholder="Phone number"
+      >
+
+      <textarea
+        id="customerAddress"
+        placeholder="Delivery address"
+      ></textarea>
+
+      <button
+        class="confirm"
+        onclick="placeOrder()">
+        Confirm & Place Order
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- SUCCESS MODAL -->
+<div class="modal" id="successModal">
+
+  <div class="modal-box success">
+
+    <div class="success-icon">✅</div>
+
+    <h2>Order Confirmed</h2>
+
+    <p id="successText" style="color:var(--muted)"></p>
+
+    <button
+      class="confirm"
+      onclick="closeSuccess()">
+      View Order Status
+    </button>
+
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer class="main-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <h2>GANESH PHARMACY</h2>
+        <p>Your premier 5-star healthcare and medical store partner. Supplying 100% genuine medicines, wellness essentials, and clinical guidance.</p>
+        <div class="developer-credit-badge">
+          <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z"/></svg>
+          Designed & Developed by B.Ganesh
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h3>Quick Links</h3>
+        <div class="footer-links">
+          <a href="index.html">Home Dashboard</a>
+          <a href="medicines.html">Medicines Store</a>
+          <a href="services.html">Pharmacy Services</a>
+          <a href="wellness.html">Health & Wellness</a>
+          <a href="contact.html">Contact Us</a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h3>Our Services</h3>
+        <div class="footer-links">
+          <a href="services.html">Prescription Support</a>
+          <a href="services.html">Express Delivery</a>
+          <a href="services.html">Pharmacist Advice</a>
+          <a href="services.html">Vital Checkups</a>
+          <a href="services.html">24/7 Helpline</a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h3>Store Hours</h3>
+        <p style="font-size: 0.88rem; margin-bottom: 8px;">Monday – Saturday: 7:00 AM – 11:00 PM</p>
+        <p style="font-size: 0.88rem; margin-bottom: 16px;">Sunday: 8:00 AM – 10:00 PM</p>
+        <p style="font-size: 0.88rem; color: #C084FC; font-weight: 700;">Emergency Desk: Open 24 Hours</p>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2026 Ganesh Pharmacy Medical Store. All Rights Reserved. | 3rd Year CSE Project</p>
+      <p style="color: #C084FC; font-weight: 600;">Created by B.Ganesh</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+
+/* =========================
+   MEDICINE DATA
+========================= */
+
+const medicines = [
+
+  {
+    id:1,
+    name:"Paracetamol 500mg",
+    brand:"GanesCare",
+    dose:"500mg • 10 tablets",
+    price:40,
+    category:"pain",
+    type:"otc",
+    description:"Relieves pain and reduces fever",
+    image:"../assets/images/Screenshot 2026-08-10 222152.png"
+  },
+
+  {
+    id:2,
+    name:"Dolo 650",
+    brand:"Dolo",
+    dose:"650mg • 10 tablets",
+    price:60,
+    category:"pain",
+    type:"otc",
+    description:"Relieves pain and fever",
+    image:"../assets/images/Screenshot 2026-08-10 222237.png"
+  },
+
+  {
+    id:3,
+    name:"Cetirizine 10mg",
+    brand:"AllerFree",
+    dose:"10mg • 10 tablets",
+    price:30,
+    category:"cold",
+    type:"otc",
+    description:"Relief from allergy symptoms",
+    image:"../assets/images/Screenshot 2026-08-10 222339.png"
+  },
+
+  {
+    id:4,
+    name:"Pantoprazole 40mg",
+    brand:"Glenmark",
+    dose:"40mg • 10 tablets",
+    price:55,
+    category:"digestive",
+    type:"otc",
+    description:"Reduces stomach acid",
+    image:"../assets/images/Screenshot 2026-08-10 222401.png"
+  },
+
+  {
+    id:5,
+    name:"Azithromycin 500mg",
+    brand:"Cipla",
+    dose:"500mg • 3 tablets",
+    price:120,
+    category:"rx",
+    type:"rx",
+    description:"Prescription antibiotic",
+    image:"../assets/images/Screenshot 2026-08-10 222424.png"
+  },
+
+  {
+    id:6,
+    name:"Amoxicillin 500mg",
+    brand:"Amoxil",
+    dose:"500mg • 10 capsules",
+    price:100,
+    category:"rx",
+    type:"rx",
+    description:"Prescription antibiotic",
+    image:"../assets/images/Screenshot 2026-08-10 222446.png"
+  },
+
+  {
+    id:7,
+    name:"ORS Sachets",
+    brand:"Wipro",
+    dose:"21.8g • 6 sachets",
+    price:25,
+    category:"otc",
+    type:"otc",
+    description:"Oral rehydration support",
+    image:"../assets/images/Screenshot 2026-08-10 222503.png"
+  },
+
+  {
+    id:8,
+    name:"Vitamin C 500mg",
+    brand:"HealthAid",
+    dose:"500mg • 10 tablets",
+    price:50,
+    category:"vitamins",
+    type:"otc",
+    description:"Daily vitamin C supplement",
+    image:"../assets/images/Screenshot 2026-08-10 222520.png"
+  },
+
+  {
+    id:9,
+    name:"Calcium + Vitamin D3",
+    brand:"HealthBest",
+    dose:"500mg • 10 tablets",
+    price:75,
+    category:"vitamins",
+    type:"otc",
+    description:"Supports bone health",
+    image:"../assets/images/Screenshot 2026-08-10 222830.png"
+  },
+
+  {
+    id:10,
+    name:"Ibuprofen 400mg",
+    brand:"Cipla",
+    dose:"400mg • 10 tablets",
+    price:65,
+    category:"pain",
+    type:"rx",
+    description:"Pain and inflammation relief",
+    image:"../assets/images/Screenshot 2026-08-10 222848.png"
+  },
+
+  {
+    id:11,
+    name:"Omeprazole 20mg",
+    brand:"Dr. Reddy's",
+    dose:"20mg • 10 capsules",
+    price:70,
+    category:"digestive",
+    type:"otc",
+    description:"Reduces stomach acid",
+    image:"../assets/images/Screenshot 2026-08-10 222908.png"
+  },
+
+  {
+    id:12,
+    name:"Antacid Suspension",
+    brand:"Mankind",
+    dose:"200ml • 1 bottle",
+    price:50,
+    category:"digestive",
+    type:"otc",
+    description:"Relief from acidity",
+    image:"../assets/images/Screenshot 2026-08-10 222924.png"
+  },
+
+  {
+    id:13,
+    name:"Diclofenac Gel",
+    brand:"Voltaren",
+    dose:"30g tube",
+    price:110,
+    category:"pain",
+    type:"otc",
+    description:"Topical pain relief",
+    image:"../assets/images/Screenshot 2026-08-10 223002.png"
+  },
+
+  {
+    id:14,
+    name:"Multivitamin Tablets",
+    brand:"NutriPlus",
+    dose:"30 tablets",
+    price:125,
+    category:"vitamins",
+    type:"otc",
+    description:"Daily nutritional support",
+    image:"../assets/images/Screenshot 2026-08-10 223034.png"
+  },
+
+  {
+    id:15,
+    name:"Cough Syrup",
+    brand:"Benadryl",
+    dose:"100ml bottle",
+    price:90,
+    category:"cold",
+    type:"otc",
+    description:"Cough symptom relief",
+    image:"../assets/images/Screenshot 2026-08-10 223254.png"
+  }
+
+];
+
+
+/* =========================
+   CART
+========================= */
+
+let cart =
+  JSON.parse(localStorage.getItem("ganeshPharmacyCart")) || [];
+
+let activeFilter = "all";
+
+
+function money(value){
+  return "₹" + value.toLocaleString("en-IN");
+}
+
+
+function saveCart(){
+  localStorage.setItem(
+    "ganeshPharmacyCart",
+    JSON.stringify(cart)
+  );
+}
+
+
+/* =========================
+   RENDER MEDICINES
+========================= */
+
+function renderMedicines(){
+
+  const query =
+    document
+      .getElementById("searchInput")
+      .value
+      .toLowerCase()
+      .trim();
+
+  const filtered = medicines.filter(medicine => {
+
+    const matchesFilter =
+      activeFilter === "all" ||
+      medicine.category === activeFilter ||
+      medicine.type === activeFilter;
+
+    const searchable =
+      (
+        medicine.name +
+        " " +
+        medicine.brand +
+        " " +
+        medicine.dose +
+        " " +
+        medicine.category
+      ).toLowerCase();
+
+    return matchesFilter && searchable.includes(query);
+
+  });
+
+  const grid =
+    document.getElementById("medicineGrid");
+
+  grid.innerHTML = "";
+
+  filtered.forEach(medicine => {
+
+    const card = document.createElement("div");
+
+    card.className = "card";
+
+    card.innerHTML = `
+
+      <div class="medicine-image">
+        <img src="${medicine.image}" alt="${medicine.name}" class="medicine-img" loading="lazy" onerror="this.onerror=null; this.src='../assets/images/medicine_product_display.png';">
+      </div>
+
+      <span class="badge ${medicine.type === "rx" ? "rx" : "otc"}">
+        ${medicine.type === "rx" ? "Rx Required" : "OTC"}
+      </span>
+
+      <h3>${medicine.name}</h3>
+
+      <div class="brand">
+        ${medicine.brand}
+      </div>
+
+      <div class="dose">
+        ${medicine.dose}
+      </div>
+
+      <div class="description">
+        ${medicine.description}
+      </div>
+
+      <div class="price-row">
+
+        <span class="price">
+          ${money(medicine.price)}
+        </span>
+
+        <span class="stock">
+          ✓ In Stock
+        </span>
+
+      </div>
+
+      <button
+        class="add-cart"
+        onclick="addToCart(${medicine.id})">
+        🛒 Add to Cart
+      </button>
+
+    `;
+
+    grid.appendChild(card);
+
+  });
+
+  document.getElementById("medicineCount").textContent =
+    filtered.length + " medicines found";
+
+  document.getElementById("emptyMessage").style.display =
+    filtered.length ? "none" : "block";
+}
+
+
+/* =========================
+   SEARCH SUGGESTIONS
+========================= */
+
+function showSuggestions(){
+
+  const input =
+    document.getElementById("searchInput");
+
+  const suggestions =
+    document.getElementById("suggestions");
+
+  const query =
+    input.value.toLowerCase().trim();
+
+  if(!query){
+
+    suggestions.style.display = "none";
+    return;
+
+  }
+
+  const results =
+    medicines
+      .filter(medicine =>
+        (
+          medicine.name +
+          " " +
+          medicine.brand +
+          " " +
+          medicine.dose
+        )
+        .toLowerCase()
+        .includes(query)
+      )
+      .slice(0,6);
+
+  if(!results.length){
+
+    suggestions.style.display = "none";
+    return;
+
+  }
+
+  suggestions.innerHTML = results.map(medicine => `
+
+    <div
+      class="suggestion"
+      onclick="selectSuggestion(${medicine.id})">
+
+      <div>
+        <strong>${medicine.name}</strong>
+
+        <small>
+          ${medicine.brand} • ${medicine.dose}
+        </small>
+      </div>
+
+      <strong>
+        ${money(medicine.price)}
+      </strong>
+
+    </div>
+
+  `).join("");
+
+  suggestions.style.display = "block";
+}
+
+
+function selectSuggestion(id){
+
+  const medicine =
+    medicines.find(m => m.id === id);
+
+  document.getElementById("searchInput").value =
+    medicine.name;
+
+  document.getElementById("suggestions").style.display =
+    "none";
+
+  activeFilter = "all";
+
+  document
+    .querySelectorAll(".filter")
+    .forEach(button =>
+      button.classList.remove("active")
+    );
+
+  document
+    .querySelector('[data-filter="all"]')
+    .classList.add("active");
+
+  renderMedicines();
+}
+
+
+function performSearch(){
+
+  renderMedicines();
+
+  document.getElementById("suggestions").style.display =
+    "none";
+}
+
+
+/* =========================
+   ADD TO CART
+========================= */
+
+function addToCart(id){
+
+  const medicine =
+    medicines.find(m => m.id === id);
+
+  const existing =
+    cart.find(item => item.id === id);
+
+  if(existing){
+
+    existing.quantity++;
+
+  }else{
+
+    cart.push({
+      id:medicine.id,
+      name:medicine.name,
+      price:medicine.price,
+      quantity:1
+    });
+
+  }
+
+  saveCart();
+  updateCart();
+
+}
+
+
+/* =========================
+   UPDATE QUANTITY
+========================= */
+
+function changeQuantity(id,change){
+
+  const item =
+    cart.find(item => item.id === id);
+
+  if(!item) return;
+
+  item.quantity += change;
+
+  if(item.quantity <= 0){
+
+    cart =
+      cart.filter(item => item.id !== id);
+
+  }
+
+  saveCart();
+  updateCart();
+
+}
+
+
+function removeFromCart(id){
+
+  cart =
+    cart.filter(item => item.id !== id);
+
+  saveCart();
+  updateCart();
+
+}
+
+
+/* =========================
+   CART UI
+========================= */
+
+function updateCart(){
+
+  const cartItems =
+    document.getElementById("cartItems");
+
+  const totalItems =
+    cart.reduce(
+      (sum,item) => sum + item.quantity,
+      0
+    );
+
+  const subtotal =
+    cart.reduce(
+      (sum,item) =>
+        sum + item.price * item.quantity,
+      0
+    );
+
+  const delivery =
+    subtotal > 0 ? 20 : 0;
+
+  const total =
+    subtotal + delivery;
+
+
+  document.getElementById("cartCount").textContent =
+    totalItems + " Item" +
+    (totalItems === 1 ? "" : "s");
+
+  document.getElementById("topCartCount").textContent =
+    totalItems;
+
+  document.getElementById("subtotal").textContent =
+    money(subtotal);
+
+  document.getElementById("delivery").textContent =
+    money(delivery);
+
+  document.getElementById("total").textContent =
+    money(total);
+
+  document.getElementById("orderButton").disabled =
+    cart.length === 0;
+
+
+  if(cart.length === 0){
+
+    cartItems.innerHTML = `
+      <div class="empty-cart">
+        Your cart is empty.
+        Add medicines to place an order.
+      </div>
+    `;
+
+    return;
+
+  }
+
+
+  cartItems.innerHTML = cart.map(item => `
+
+    <div class="cart-item">
+
+      <div class="cart-icon">
+        💊
+      </div>
+
+      <div>
+
+        <div class="cart-name">
+          ${item.name}
+        </div>
+
+        <div class="cart-price">
+          ${money(item.price)}
+        </div>
+
+        <div class="quantity">
+
+          <button
+            onclick="changeQuantity(${item.id},-1)">
+            −
+          </button>
+
+          <strong>
+            ${item.quantity}
+          </strong>
+
+          <button
+            onclick="changeQuantity(${item.id},1)">
+            +
+          </button>
+
+        </div>
+
+      </div>
+
+      <button
+        class="remove"
+        onclick="removeFromCart(${item.id})">
+        ✕
+      </button>
+
+    </div>
+
+  `).join("");
+
+}
+
+
+/* =========================
+   FILTER BUTTONS
+========================= */
+
+document
+  .querySelectorAll(".filter")
+  .forEach(button => {
+
+    button.addEventListener("click",function(){
+
+      document
+        .querySelectorAll(".filter")
+        .forEach(btn =>
+          btn.classList.remove("active")
+        );
+
+      this.classList.add("active");
+
+      activeFilter =
+        this.dataset.filter;
+
+      renderMedicines();
+
+    });
+
+  });
+
+
+/* =========================
+   SEARCH EVENTS
+========================= */
+
+document
+  .getElementById("searchInput")
+  .addEventListener("input",function(){
+
+    renderMedicines();
+    showSuggestions();
+
+  });
+
+
+document
+  .getElementById("searchInput")
+  .addEventListener("focus",showSuggestions);
+
+
+document.addEventListener("click",function(event){
+
+  if(!event.target.closest(".search-area")){
+
+    document
+      .getElementById("suggestions")
+      .style.display = "none";
+
+  }
+
+});
+
+
+/* =========================
+   CHECKOUT
+========================= */
+
+function openCheckout(){
+
+  if(cart.length === 0) return;
+
+  const subtotal =
+    cart.reduce(
+      (sum,item) =>
+        sum + item.price * item.quantity,
+      0
+    );
+
+  const total =
+    subtotal + 20;
+
+  document.getElementById("checkoutSummary").innerHTML = `
+
+    <strong>
+      ${cart.reduce(
+        (sum,item) => sum + item.quantity,
+        0
+      )} medicines
+    </strong>
+
+    <div style="margin-top:8px">
+
+      ${cart.map(item =>
+        `${item.name} × ${item.quantity}
+         — ${money(item.price * item.quantity)}`
+      ).join("<br>")}
+
+    </div>
+
+    <hr style="border:0;border-top:1px solid #ddd">
+
+    <strong>
+      Total: ${money(total)}
+    </strong>
+
+  `;
+
+  document
+    .getElementById("checkoutModal")
+    .classList.add("open");
+
+}
+
+
+function closeCheckout(){
+
+  document
+    .getElementById("checkoutModal")
+    .classList.remove("open");
+
+}
+
+
+/* =========================================================
+   DYNAMIC MULTI-ORDER TRACKING SYSTEM
+========================================================= */
+
+const ORDER_STAGES = [
+  {
+    title: "Order Confirmed",
+    desc: "Order placed & received at pharmacy desk",
+    badgeText: "Confirmed",
+    badgeClass: "badge-confirmed",
+    offsetMins: 0
+  },
+  {
+    title: "Pharmacist Verification",
+    desc: "Checking Rx & dosage safety with pharmacist",
+    badgeText: "Pharmacist Audit",
+    badgeClass: "badge-verification",
+    offsetMins: 4
+  },
+  {
+    title: "Packaged & Sealed",
+    desc: "Medicines packed in tamper-evident sealed pouch",
+    badgeText: "Packaging",
+    badgeClass: "badge-packaging",
+    offsetMins: 12
+  },
+  {
+    title: "Out for Delivery",
+    desc: "Express courier partner on the way to address",
+    badgeText: "Out for Delivery",
+    badgeClass: "badge-delivery",
+    offsetMins: 22
+  },
+  {
+    title: "Safely Delivered",
+    desc: "Handed over safely to recipient",
+    badgeText: "Delivered",
+    badgeClass: "badge-completed",
+    offsetMins: 40
+  }
+];
+
+// Sample Couriers
+const SAMPLE_COURIERS = [
+  { name: "Ramesh Kumar", vehicle: "TVS XL (KA 05 EQ 8821)", phone: "+91 98450 12345", pin: "4920" },
+  { name: "Vikram Singh", vehicle: "Honda Activa (KA 01 EV 9920)", phone: "+91 97312 88401", pin: "8102" },
+  { name: "Suresh Babu", vehicle: "Hero Electric (KA 03 MX 1102)", phone: "+91 99001 54321", pin: "3054" }
+];
+
+let selectedOrderId = null;
+
+function loadOrders() {
+  try {
+    const data = localStorage.getItem("ganeshPharmacyOrders");
+    let orders = data ? JSON.parse(data) : [];
+    if (!orders || orders.length === 0) {
+      orders = seedInitialOrders();
+      localStorage.setItem("ganeshPharmacyOrders", JSON.stringify(orders));
+    }
+    return orders;
+  } catch(e) {
+    return seedInitialOrders();
+  }
+}
+
+function saveOrders(orders) {
+  localStorage.setItem("ganeshPharmacyOrders", JSON.stringify(orders));
+}
+
+function seedInitialOrders() {
+  const now = Date.now();
+  
+  // Order 1: Placed 25 mins ago -> Currently Out for Delivery (Stage 3)
+  const o1Time = now - 25 * 60 * 1000;
+  const order1 = {
+    id: "GP-849201",
+    createdAt: o1Time,
+    customer: { name: "Ananya Sharma", phone: "9876543210", address: "#42, MG Road, Indiranagar, Bengaluru" },
+    items: [
+      { name: "Paracetamol 500mg", quantity: 2, price: 30 },
+      { name: "Amoxicillin 500mg", quantity: 1, price: 120 }
+    ],
+    total: 180,
+    currentStage: 3,
+    courier: SAMPLE_COURIERS[0],
+    rxVerified: true
+  };
+
+  // Order 2: Placed 2 hours ago -> Currently Delivered (Stage 4)
+  const o2Time = now - 120 * 60 * 1000;
+  const order2 = {
+    id: "GP-739102",
+    createdAt: o2Time,
+    customer: { name: "Rahul Verma", phone: "9988776655", address: "#108, HSR Layout, Sector 2, Bengaluru" },
+    items: [
+      { name: "Vitamin C Chewable 500mg", quantity: 3, price: 85 },
+      { name: "Cetirizine 10mg", quantity: 1, price: 45 }
+    ],
+    total: 300,
+    currentStage: 4,
+    courier: SAMPLE_COURIERS[1],
+    rxVerified: true
+  };
+
+  return [order1, order2];
+}
+
+function formatClockTime(timestamp) {
+  if (!timestamp) return "--:--";
+  const date = new Date(timestamp);
+  return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+}
+
+function formatEstimatedDelivery(order) {
+  const stage = order.currentStage;
+  if (stage >= 4) {
+    const delTime = formatClockTime(order.createdAt + ORDER_STAGES[4].offsetMins * 60000);
+    return `Completed • Delivered today at ${delTime}`;
+  }
+  
+  if (stage === 3) {
+    return `Out for Delivery • Expected in ~10-15 mins`;
+  }
+
+  const startEst = new Date(order.createdAt + 25 * 60000);
+  const endEst = new Date(order.createdAt + 45 * 60000);
+  const timeStr = `${formatClockTime(startEst.getTime())} – ${formatClockTime(endEst.getTime())}`;
+  return `Today, ${timeStr}`;
+}
+
+function initOrderStatusUI() {
+  const orders = loadOrders();
+  const selectEl = document.getElementById("orderSelect");
+  if (!selectEl) return;
+
+  if (orders.length === 0) {
+    selectEl.innerHTML = '<option value="">No Active Orders</option>';
+    renderOrderStatus(null);
+    return;
+  }
+
+  if (!selectedOrderId || !orders.some(o => o.id === selectedOrderId)) {
+    selectedOrderId = orders[0].id;
+  }
+
+  selectEl.innerHTML = orders.map(o => {
+    const stg = ORDER_STAGES[o.currentStage] || ORDER_STAGES[0];
+    return `<option value="${o.id}" ${o.id === selectedOrderId ? 'selected' : ''}>${o.id} • ${stg.badgeText}</option>`;
+  }).join('');
+
+  const currentOrder = orders.find(o => o.id === selectedOrderId) || orders[0];
+  renderOrderStatus(currentOrder);
+}
+
+function switchSelectedOrder(orderId) {
+  if (!orderId) return;
+  selectedOrderId = orderId;
+  initOrderStatusUI();
+}
+
+function renderOrderStatus(order) {
+  const badgeEl = document.getElementById("orderBadge");
+  const flowEl = document.getElementById("statusFlow");
+  const infoEl = document.getElementById("statusInfo");
+  const courierEl = document.getElementById("courierDetails");
+
+  if (!order) {
+    if (badgeEl) { badgeEl.textContent = "No Order"; badgeEl.className = "order-badge-tag badge-confirmed"; }
+    if (flowEl) flowEl.innerHTML = '<div style="color:var(--muted); font-size:11px; padding:15px 0; text-align:center;">No active order found. Place an order from your cart to track status.</div>';
+    if (infoEl) infoEl.style.display = 'none';
+    if (courierEl) courierEl.innerHTML = '';
+    return;
+  }
+
+  const currentStg = ORDER_STAGES[order.currentStage] || ORDER_STAGES[0];
+
+  // Badge
+  if (badgeEl) {
+    badgeEl.textContent = `#${order.id} • ${currentStg.badgeText}`;
+    badgeEl.className = `order-badge-tag ${currentStg.badgeClass}`;
+  }
+
+  // Items Summary
+  const itemsText = order.items ? order.items.map(i => `${i.name} (${i.quantity || i.qty || 1}x)`).join(", ") : "Medicines";
+
+  // Flow steps HTML
+  let stepsHtml = `
+    <div class="order-items-mini">
+      📋 <strong>Order Items:</strong> ${itemsText} <br>
+      <span style="font-size:9px; color:#64748b;">Placed on ${new Date(order.createdAt).toLocaleDateString()} at ${formatClockTime(order.createdAt)}</span>
+    </div>
+  `;
+
+  ORDER_STAGES.forEach((stg, index) => {
+    const isDone = index < order.currentStage;
+    const isCurrent = index === order.currentStage;
+
+    let stepClass = isDone ? "done" : (isCurrent ? "current" : "pending");
+    let dotContent = isDone ? "✓" : (index + 1);
+
+    // Calculate timestamp for this step
+    const stepTimeMs = order.createdAt + stg.offsetMins * 60000;
+    let timeLabel = "";
+    if (isDone) {
+      timeLabel = `<span class="step-time">${formatClockTime(stepTimeMs)}</span>`;
+    } else if (isCurrent) {
+      timeLabel = `<span class="step-time" style="background:#0284c7; color:white;">Active (${formatClockTime(stepTimeMs)})</span>`;
+    } else {
+      timeLabel = `<span class="step-time" style="background:#f1f5f9; color:#94a3b8;">Pending</span>`;
+    }
+
+    stepsHtml += `
+      <div class="status-step ${stepClass}">
+        <div class="dot">${dotContent}</div>
+        <div>
+          <div class="step-header">
+            <span class="step-title">${stg.title}</span>
+            ${timeLabel}
+          </div>
+          <span class="step-desc">${stg.desc}</span>
+        </div>
+      </div>
+    `;
+  });
+
+  if (flowEl) flowEl.innerHTML = stepsHtml;
+
+  // Status Info
+  if (infoEl) {
+    infoEl.style.display = 'block';
+    infoEl.innerHTML = `
+      <div style="font-size:11px; margin-bottom:4px;"><strong>Current Status:</strong> <span style="color:#0284c7; font-weight:700;">${currentStg.title}</span></div>
+      <div style="font-size:10.5px; color:#475569;"><strong>Estimated Delivery:</strong> ${formatEstimatedDelivery(order)}</div>
+      <div style="font-size:10px; color:#64748b; margin-top:2px;"><strong>Delivery Address:</strong> ${order.customer ? order.customer.address : 'Standard Delivery Address'}</div>
+    `;
+  }
+
+  // Courier Card (If Stage >= 3: Out for Delivery or Delivered)
+  if (courierEl) {
+    if (order.currentStage >= 3 && order.courier) {
+      courierEl.innerHTML = `
+        <div class="courier-info-card">
+          <div style="font-weight:700; color:#0f766e; font-size:10.5px; display:flex; justify-content:space-between; border-bottom:1px solid #e2e8f0; padding-bottom:4px;">
+            <span>🛵 Express Delivery Partner</span>
+            <span>PIN: ${order.courier.pin}</span>
+          </div>
+          <div class="courier-row">
+            <span><strong>Runner:</strong> ${order.courier.name}</span>
+            <span><strong>Vehicle:</strong> ${order.courier.vehicle}</span>
+          </div>
+          <div class="courier-row" style="margin-top:2px;">
+            <span><strong>Contact:</strong> ${order.courier.phone}</span>
+            <span style="color:#10b981; font-weight:700;">● Live Location On</span>
+          </div>
+        </div>
+      `;
+    } else {
+      courierEl.innerHTML = '';
+    }
+  }
+}
+
+function advanceSelectedOrderStage() {
+  const orders = loadOrders();
+  if (!orders.length) return alert("No orders to advance. Place an order first!");
+  
+  const orderIndex = orders.findIndex(o => o.id === selectedOrderId);
+  if (orderIndex === -1) return;
+
+  const order = orders[orderIndex];
+  if (order.currentStage < ORDER_STAGES.length - 1) {
+    order.currentStage++;
+    saveOrders(orders);
+    initOrderStatusUI();
+  } else {
+    alert(`Order ${order.id} is already marked as Safely Delivered!`);
+  }
+}
+
+function createTestOrder() {
+  const orders = loadOrders();
+  const testId = "GP-" + Math.floor(100000 + Math.random() * 900000);
+  const newOrder = {
+    id: testId,
+    createdAt: Date.now(),
+    customer: { name: "Demo User", phone: "9812345678", address: "#15, Pharmacy Tech Park, Indiranagar" },
+    items: [
+      { name: "Multivitamin Active Gold", quantity: 1, price: 350 },
+      { name: "Cough Relief Syrup 100ml", quantity: 1, price: 95 }
+    ],
+    total: 445,
+    currentStage: 0,
+    courier: SAMPLE_COURIERS[Math.floor(Math.random() * SAMPLE_COURIERS.length)],
+    rxVerified: true
+  };
+
+  orders.unshift(newOrder);
+  saveOrders(orders);
+  selectedOrderId = testId;
+  initOrderStatusUI();
+}
+
+/* =========================
+   PLACE ORDER
+========================= */
+
+function placeOrder(){
+
+  const name =
+    document
+      .getElementById("customerName")
+      .value.trim();
+
+  const phone =
+    document
+      .getElementById("customerPhone")
+      .value.trim();
+
+  const address =
+    document
+      .getElementById("customerAddress")
+      .value.trim();
+
+  if(!name || !phone || !address){
+    alert("Please enter your name, phone number and delivery address.");
+    return;
+  }
+
+  const orderId = "GP-" + Math.floor(100000 + Math.random() * 900000);
+  const subtotal = cart.reduce((sum,item) => sum + item.price * item.quantity, 0);
+  const total = subtotal + 20;
+
+  const newOrder = {
+    id: orderId,
+    createdAt: Date.now(),
+    customer: { name, phone, address },
+    items: cart.map(i => ({ name: i.name, quantity: i.quantity, price: i.price })),
+    total: total,
+    currentStage: 0,
+    courier: SAMPLE_COURIERS[Math.floor(Math.random() * SAMPLE_COURIERS.length)],
+    rxVerified: true
+  };
+
+  const orders = loadOrders();
+  orders.unshift(newOrder);
+  saveOrders(orders);
+
+  selectedOrderId = orderId;
+  initOrderStatusUI();
+
+  document.getElementById("successText").textContent =
+    "Order " + orderId + " has been placed successfully. Your medicines are now being prepared by our pharmacist.";
+
+  closeCheckout();
+
+  document
+    .getElementById("successModal")
+    .classList.add("open");
+
+  cart = [];
+  saveCart();
+  updateCart();
+
+}
+
+
+/* =========================
+   SUCCESS MODAL
+========================= */
+
+function closeSuccess(){
+
+  document
+    .getElementById("successModal")
+    .classList.remove("open");
+
+}
+
+
+/* =========================
+   INITIAL LOAD & MOBILE NAV
+========================= */
+
+renderMedicines();
+
+updateCart();
+
+initOrderStatusUI();
+
+const mobileToggle = document.getElementById('mobileToggle');
+const mobileDrawer = document.getElementById('mobileDrawer');
+const drawerClose = document.getElementById('drawerClose');
+const drawerOverlay = document.getElementById('drawerOverlay');
+
+if (mobileToggle && mobileDrawer) {
+  mobileToggle.addEventListener('click', () => {
+    mobileDrawer.classList.add('open');
+    drawerOverlay.classList.add('active');
+  });
+
+  drawerClose.addEventListener('click', () => {
+    mobileDrawer.classList.remove('open');
+    drawerOverlay.classList.remove('active');
+  });
+
+  drawerOverlay.addEventListener('click', () => {
+    mobileDrawer.classList.remove('open');
+    drawerOverlay.classList.remove('active');
+  });
+}
+
+</script>
+
+</body>
+</html>
